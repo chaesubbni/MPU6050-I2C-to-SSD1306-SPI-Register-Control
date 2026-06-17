@@ -19,12 +19,12 @@ https://github.com/user-attachments/assets/b8290e83-01c9-48a4-8443-880cbb4036a2
 
 외부 추상화 라이브러리 없이 SSD1306 드라이버 IC와 오차 없는 고속 동기화 통신을 수행하기 위해, 데이터시트의 타이밍 파형(Timing Diagram)을 분석하여 ATmega328P의 SPI 모듈 설정 규격을 도출했습니다.
 
-* **SPI Mode 0 (CPOL = 0, CPHA = 0) 선정 근거:**
+* **SPI Mode 0 (CPOL = 0, CPHA = 0) 선정 근거**
 
 <img width="605" height="270" alt="image" src="https://github.com/user-attachments/assets/f33c9dd8-ad1c-4ea6-9435-533cc3c07e3a" />
 
   * **CPOL = 0 (Clock Polarity):** 칩 선택 신호(`CS#`)가 비활성화(High) 상태이거나 통신 대기(Idle) 상태일 때, 직렬 클럭 라인(`SCLK`)이 **Low 레벨을 유지**하는 파형을 확인했습니다. 이에 따라 클럭의 기본 활성 레벨을 Low로 정의하는 `CPOL = 0`을 적용했습니다.
-  * **CPHA = 0 (Clock Phase):** `CS#`가 Low로 떨어지며 통신이 시작된 후, 전송되는 직렬 데이터가 **첫 번째 클럭의 상승 에지(Rising Edge)에서 정확히 샘플링(Sample, 1비트 전송)**되고, 하강 에지(Falling Edge)에서 다음 비트를 전선에 미리 올려두는 셋업(Setup) 동작을 수행하는 메커니즘을 규명했습니다. 따라서 첫 번째 에지에서 데이터를 수집하는 `CPHA = 0`을 도출했습니다.
+  * **CPHA = 0 (Clock Phase):** `CS#`가 Low로 떨어지며 통신이 시작된 후, 전송되는 직렬 데이터가 첫 번째 클럭의 상승 에지(Rising Edge)에서 정확히 샘플링(Sample, 1비트 전송)**되고, 하강 에지(Falling Edge)에서 다음 비트를 전선에 미리 올려두는 셋업(Setup) 동작을 수행하는 메커니즘을 규명했습니다. 따라서 첫 번째 에지에서 데이터를 수집하는 `CPHA = 0`을 도출했습니다.
   * 결론적으로 두 타이밍 조건이 결합된 **SPI Mode 0** 환경에서 MCU와 디스플레이 드라이버 간의 완벽한 하드웨어 동기화가 이루어집니다.
 
 * **데이터 전송 방향 (MSB First):**
