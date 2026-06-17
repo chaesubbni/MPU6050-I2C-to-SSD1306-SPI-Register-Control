@@ -1,2 +1,5 @@
 # MPU6050-I2C-to-SSD1306-SPI-Register-Control
-Bare-metal register control for integrating MPU6050 (I2C) and SSD1306 OLED (SPI) using ATmega328P without external libraries.
+
+본 프로젝트는 ATmega328P 마이크로컨트롤러를 중심으로, 외부 추상화 라이브러리(Wire.h, SPI.h, Adafruit 드라이버 등)를 일절 사용하지 않고 디바이스들의 데이터시트를 밑바닥부터 직접 분석하여 구현한 시스템입니다.
+MPU6050 가속도 센서 값을 I2C 통신으로 읽어와 SPI 통신으로 SSD1306 OLED 모듈 화면에 띄워, 전원만 연결해 주면 쉽게 데이터 값을 눈으로 확인할 수 있습니다. 추가로 토글 스위치(버튼)를 연결하여 SSD1306 디스플레이를 안전하게 켜고 끌 수 있는 전원 제어 로직까지 포함되어 있습니다.
+단순히 MCU의 통신 인터페이스(I2C, SPI)를 활성화하는 것에 그치지 않고, 타겟 디바이스인 MPU6050 센서와 SSD1306 디스플레이 드라이버 IC의 내부 아키텍처 및 레지스터 맵, 그리고 물리적인 클럭 타이밍을 정밀하게 분석하여 데이터 파이프라인을 유기적으로 연결했습니다.
